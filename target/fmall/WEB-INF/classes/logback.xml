@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <!--输出到catalina.out文件中-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoding>UTF-8</encoding>
+        <encoder>
+            <!--文件的格式-->
+            <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!--显示所有大于DEBUG级别的日志-->
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <!--当前项目的日志文件输出-->
+    <appender name="fmall" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--<File>D:/APP/DevelopTools/IDEA/log/fmall.log</File>-->
+        <File>D:/APP/DevelopTools/IDEA/log/fmall.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/APP/DevelopTools/IDEA/log/fmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <append>true</append>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--<File>D:/APP/DevelopTools/IDEA/log/error.log</File>-->
+        <File>D:/APP/DevelopTools/IDEA/log/error.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/APP/DevelopTools/IDEA/log/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <!--<fileNamePattern>D:/APP/DevelopTools/IDEA/log/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
+            <append>true</append>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <!--匹配为ERROR级别,接收-->
+            <onMatch>ACCEPT</onMatch>
+            <!--匹配为非ERROR级别,拒绝-->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--配置不让日志向上继承,info级别-->
+    <logger name="cn.fmall" additivity="false" level="INFO" >
+        <appender-ref ref="fmall" />
+        <appender-ref ref="console"/>
+    </logger>
+
+    <!-- mybatis log 日志 -->
+    <!-- 为在日志中查看dao层sql-->
+    <logger name="cn.fmall.dao" level="DEBUG"/>
+
+    <!--<logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" >-->
+    <!--<appender-ref ref="console"/>-->
+    <!--</logger>-->
+
+    <!--<logger name="java.sql.Connection" level="DEBUG">-->
+    <!--<appender-ref ref="console"/>-->
+    <!--</logger>-->
+    <!--<logger name="java.sql.Statement" level="DEBUG">-->
+    <!--<appender-ref ref="console"/>-->
+    <!--</logger>-->
+
+    <!--<logger name="java.sql.PreparedStatement" level="DEBUG">-->
+    <!--<appender-ref ref="console"/>-->
+    <!--</logger>-->
+
+    <root level="DEBUG">
+        <appender-ref ref="console"/>
+        <appender-ref ref="error"/>
+    </root>
+
+</configuration>
